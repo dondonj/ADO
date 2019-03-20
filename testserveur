@@ -1,0 +1,69 @@
+import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+
+
+  
+public class TestServeur{
+	public static void main(String args[]){
+		//Serveur s1= new Serveur();
+		Serveur ftp= new Serveur("ftp.gautero.fr");//serveur ftp
+		Serveur web= new Serveur("http://infort.gautero.fr/logs");
+		
+		
+		
+		 ArrayList<String> l = new ArrayList();
+		
+		l.add(ftp.getUrl());
+		l.add(web.getUrl());
+		System.out.println("les serveur sont:"+l);
+		
+	
+	
+	//Interface graphique java
+	
+	JFrame fenetre = new JFrame();
+	
+	
+	fenetre.setTitle("Gestion de logs");
+	
+	fenetre.setSize(400, 500);
+	
+	fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
+	fenetre.setLocationRelativeTo(null);
+	
+	JButton all_serveurs = new JButton("afficher la liste des serveurs");
+	JButton log_brut = new JButton ("affichage brut des logs");
+	JLabel select_serveur = new JLabel("Veuilez sélectionner le serveur");
+	JButton soumette = new JButton("soumettre");
+	
+	JPanel pan =new JPanel();
+	
+	JComboBox  liste1 = new JComboBox();
+	 
+			liste1.addItem("C:\\Users\\pilimini\\Desktop\\fiche\\appache.txt.log");
+			liste1.addItem("C:\\\\Users\\\\pilimini\\\\Desktop\\\\fiche\\\\exemple.txt.txt");       
+	        
+	       //pan.add(all_serveurs);
+	        // pan.add(log_brut);
+	         pan.add(select_serveur);
+	         pan.add(liste1);
+	         pan.add(soumette);
+	        
+	       
+	        fenetre.setContentPane(pan);
+	        //pan.setBackgroun(Color.ORANGE);
+	        //pan.setLayout(new FlowLayout());
+	         fenetre.setVisible(true);
