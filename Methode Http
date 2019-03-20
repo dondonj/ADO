@@ -1,0 +1,87 @@
+package methodehttp;
+import java.net.*;
+import java.io.*;
+import java.util.ArrayList;
+import org.apache.commons.io.FilenameUtils;
+
+
+public class MethodeHTTP {
+    
+    
+    static String pathServer="http://infort.gautero.fr/logs/";
+    static URLConnection yc;
+    static URL oracle;
+
+    
+    public static void main(String[] args) {
+        String filename="exemple.apache2.access.log";
+        
+       String contents=readFolder(connexion(""));
+        System.out.println(contents);
+        ArrayList<String> filenames=getNomsFichiers(contents);
+        int i=0;
+        while(i!=filenames.size()){
+            String filecontent=readFile(connexion(filenames.get(i)));
+     
+            System.out.println("\n\n"+filenames.get(i)+"\n\n"+filecontent+"\n\n\n\n");
+            i=i+1;
+        }
+    }
+    
+    public static URLConnection connexion(String filename){
+        try{
+        oracle = new URL(pathServer+filename);
+        yc = oracle.openConnection();
+        }catch(Exception E){
+            System.out.println("XXX");
+        }
+        return yc;
+    }
+    
+    public static String readFile(URLConnection yc){
+        String contents="";
+        try{
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+        yc.getInputStream()));
+        String inputLine;
+        while ((inputLine = in.readLine()) != null){ 
+            contents=contents+inputLine+"\n";
+        }
+        in.close();
+        } catch (Exception E){
+        }
+        return contents;
+    }
+    
+    public static String readFolder(URLConnection yc){
+        String contents="";
+        try{
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+        yc.getInputStream()));
+        String inputLine;
+        while ((inputLine = in.readLine()) != null){ 
+            contents=contents+inputLine+"\n";
+     
+        }
+        in.close();
+        } catch (Exception E){
+        }
+
+        return contents;
+    }
+    
+    public static ArrayList<String> getNomsFichiers(String contents){
+        ArrayList<String> filenames=new ArrayList<>();
+        int i=0;
+        String[] list1=contents.split("\\.log\"");
+        while(i!=list1.length-1){
+            String[] list2=list1[i].split("href=\"");
+            filenames.add(list2[list2.length-1]+".log");
+        i=i+1;
+        }
+        System.out.println(filenames);
+   
+    return filenames;
+    }
+    
+}
