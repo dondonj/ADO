@@ -1,0 +1,165 @@
+package methodeftp;
+import java.*;
+import java.net.*;
+import java.io.*;
+import java.net.InetAddress;
+import java.text.*;
+import java.util.*;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPReply;
+import org.apache.commons.net.ftp.FTP;
+import org.*;
+import org.apache.commons.net.*;
+import org.apache.commons.net.SocketClient;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
+import java.io.IOException;
+
+/**
+ *
+ * @author User
+ */
+public class MethodeFTP {
+    
+    static String server = "ftp.gautero.fr";
+    static int port = 21;
+    static String user = "rtappli@gautero.fr";
+    static String pass = "RTAppli2019";
+    
+    
+    public static void main(String[] args) {
+        
+        
+       FTPClient ftpClient=connexion();
+       ArrayList<String> listfiles=getNomsFichiers(ftpClient);
+        
+        
+        for (String filename : listfiles ) {
+            System.out.println(filename);
+            telechargerFichier(filename,ftpClient);
+        }
+        /*
+        
+        
+        try {
+                if (ftpClient.isConnected()) {
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                }
+        } catch (IOException ex) {
+                System.out.println("lala " + ex.getMessage());
+        }*/
+            
+        // TODO code application logic here
+    }
+    
+    
+    public static FTPClient connexion(){
+        FTPClient ftpClient= new FTPClient();
+        try {
+            ftpClient.connect(server, port);
+            showServerReply(ftpClient);    
+            int replyCode = ftpClient.getReplyCode();
+            if (!FTPReply.isPositiveCompletion(replyCode)) {
+                System.out.println("Operation failed. Server reply code: " + replyCode);
+                return null;
+            }
+            boolean success = ftpClient.login(user,pass);
+            ftpClient.enterLocalPassiveMode();
+            showServerReply(ftpClient);
+            if (!success) {
+                System.out.println("Could not login to the server");
+                return null;
+            } else {
+                System.out.println("LOGGED IN SERVER");
+            }
+        } catch (Exception ex) {
+            System.out.println("Oops! Something wrong happened");
+            ex.printStackTrace();
+        }
+        return ftpClient;
+    }
+    
+    private static void showServerReply(FTPClient ftpClient) {
+        String[] replies = ftpClient.getReplyStrings();
+        if (replies != null && replies.length > 0) {
+            for (String aReply : replies) {
+                System.out.println("SERVER: " + aReply);
+            }
+        }
+    }
+    
+    public static void telechargerFichier(String filename,FTPClient ftpClient){
+        try {
+  
+//            ftpClient.connect(server, port);
+//            ftpClient.login(user,pass);
+//            ftpClient.setFileType(FTP.BINARY_FILE_TYPE/FTP.ASCII_FILE_TYPE);
+            String remoteFilePath =filename;
+            System.out.println(remoteFilePath);
+            
+            //File localfile = new File("C:"+filename);
+            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(filename));
+            boolean success =ftpClient.retrieveFile("/"+remoteFilePath, outputStream);
+            outputStream.close();
+  
+            if (success) {
+                System.out.println("Ftp file successfully download.");
+            }
+  
+        } catch (IOException ex) {
+            System.out.println("Error occurs in downloading files from ftp Server : " + ex.getMessage());
+        }
+//        } finally {
+//            try {
+//                if (ftpClient.isConnected()) {
+//                    ftpClient.logout();
+//                    ftpClient.disconnect();
+//                }
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//            }
+//        }
+            
+    
+    }
+    
+    public static ArrayList<String> getNomsFichiers(FTPClient ftpClient){
+        ArrayList<String> filenames;
+        filenames = new ArrayList<>();
+      
+        try {
+            
+
+    //        client.connect("ftp.javacodegeeks.com");
+    //        client.login("username", "password");
+
+            // Get the files stored on FTP Server and store them into an array of FTPFiles
+            FTPFile[] files = ftpClient.listFiles();
+
+            for (FTPFile ftpFile : files) {
+                // Check the file type and print result
+
+                if (ftpFile.getType() == FTPFile.FILE_TYPE) {
+    //                        FileUtils.byteCountToDisplaySize
+                    filenames.add(ftpFile.getName());
+                }
+            }
+            
+
+        } catch (IOException e) {
+            e.printStackTrace();
+//        } finally {
+//            try {
+//                ftpClient.disconnect();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        }
+        return filenames;
+    }
+}
+
+
