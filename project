@@ -1,0 +1,76 @@
+/**
+ * @author Assietou Alpha Brandon
+ * Groupe 1b
+ */
+ import java.util.ArrayList;
+ import java.io.*;
+public class Serveur{
+	
+	
+	
+	/*attributs de la classe; commencent par une minuscule*/
+	
+	
+	protected String url; //url du serveur
+	protected int adrIp; //@ip du serveur
+	protected int port;  //port du serveur
+
+	
+	/*constructeurs*/
+	
+	public Serveur(){
+		//System.out.println("il vous faut l'url du serveur ou son addresse ip");
+		
+	}
+	
+	public Serveur(String url){
+		this.url=url; 
+		
+		//System.out.println("l'url du serveur est :"+this.url);
+		
+	}
+	
+	
+		public void connexion(String adrIp){
+			//code
+			}
+	
+	
+	/*public String toString(){
+		return "l'url est "+this.url;
+	}*/
+	
+
+	
+	
+	//Accesseurs en lecture
+	public String getUrl(){
+		return url;
+	}
+	
+	public int getAdrIp(){
+		return adrIp;
+	}
+	
+	public int getPort(){
+		return port;
+	}
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	//Accesseurs en Ã©criture
+	
+	/*methode pour lister les fichiers prÃ©sents sur un serveur en prenant en paramÃ¨tre le chemin du serveur*/
+	
+	
+	
+	
+	
+}
